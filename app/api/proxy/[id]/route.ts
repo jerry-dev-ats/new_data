@@ -14,6 +14,8 @@ import type {
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
 
+const HARDCODED_FOODSAFETY_KEY = '120c548ccaa74236b69f';
+
 function describeFetchError(err: unknown): string {
   if (!(err instanceof Error)) return String(err);
 
@@ -184,7 +186,10 @@ export async function GET(
   }
 
   const dedicatedKey = config.serviceKeyEnv
-    ? process.env[config.serviceKeyEnv]
+    ? process.env[config.serviceKeyEnv] ||
+      (config.serviceKeyEnv === 'API_SERVICE_KEY_FOOD'
+        ? HARDCODED_FOODSAFETY_KEY
+        : undefined)
     : undefined;
   const publicServiceKey =
     process.env.API_SERVICE_KEY_PUBLIC || process.env.API_SERVICE_KEY;
