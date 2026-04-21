@@ -19,8 +19,9 @@ export type ApiConfig = {
   serviceKeyParam?: string;
   /**
    * API 전용 서비스키를 담는 환경변수 이름.
-   * 지정되지 않거나 값이 비어 있으면 공통 `API_SERVICE_KEY_PUBLIC`
-   * 또는 레거시 `API_SERVICE_KEY`로 폴백한다.
+   * 지정되면 해당 환경변수가 반드시 필요하다.
+   * 지정되지 않은 API만 공통 `API_SERVICE_KEY_PUBLIC`
+   * 또는 레거시 `API_SERVICE_KEY`를 사용한다.
    * 소비자24처럼 카테고리별로 키가 다른 API에 유용.
    */
   serviceKeyEnv?: string;

@@ -14,6 +14,38 @@ import type {
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
 
+function describeFetchError(err: unknown): string {
+  if (!(err instanceof Error)) return String(err);
+
+  const cause = (err as Error & { cause?: unknown }).cause;
+  if (cause && typeof cause === 'object') {
+    const details = cause as {
+      code?: string;
+      errno?: string | number;
+      syscall?: string;
+      address?: string;
+      port?: number;
+      host?: string;
+      message?: string;
+    };
+    const suffix = [
+      details.code,
+      details.errno,
+      details.syscall,
+      details.host ?? details.address,
+      details.port,
+      details.message,
+    ]
+      .filter(Boolean)
+      .join(' / ');
+    if (suffix) {
+      return `${err.message} (${suffix})`;
+    }
+  }
+
+  return err.message;
+}
+
 function getByPath(obj: unknown, path: string[]): unknown {
   return path.reduce<unknown>((acc, key) => {
     if (acc && typeof acc === 'object' && key in (acc as object)) {
@@ -156,19 +188,19 @@ export async function GET(
     : undefined;
   const publicServiceKey =
     process.env.API_SERVICE_KEY_PUBLIC || process.env.API_SERVICE_KEY;
-  const serviceKey = dedicatedKey || publicServiceKey;
+  // APIs that declare a dedicated env must use that exact key.
+  // Falling back to the shared data.go.kr key masks misconfiguration on deploys.
+  const serviceKey = config.serviceKeyEnv
+    ? dedicatedKey
+    : publicServiceKey;
   if (!serviceKey) {
-    const expected = [
-      config.serviceKeyEnv,
-      'API_SERVICE_KEY_PUBLIC',
-      'API_SERVICE_KEY',
-    ]
-      .filter(Boolean)
-      .join(' 또는 ');
+    const expected = config.serviceKeyEnv
+      ? config.serviceKeyEnv
+      : ['API_SERVICE_KEY_PUBLIC', 'API_SERVICE_KEY'].join(' 또는 ');
     return NextResponse.json(
       {
         error: true,
-        message: `서비스키 환경변수(${expected})가 설정되지 않았습니다. .env.local에 값을 넣어주세요.`,
+        message: `서비스키 환경변수(${expected})가 설정되지 않았습니다.`,
       },
       { status: 500 },
     );
@@ -216,7 +248,7 @@ export async function GET(
     return NextResponse.json(
       {
         error: true,
-        message: `외부 API 호출 실패: ${err instanceof Error ? err.message : String(err)}`,
+        message: `외부 API 호출 실패: ${describeFetchError(err)}`,
       },
       { status: 502 },
     );

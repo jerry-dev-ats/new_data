@@ -7,7 +7,7 @@
 - 탭 하나당 공공 API 하나 — `lib/apis/registry.ts`에 `ApiConfig` 한 개를 추가하면 탭이 자동 생성된다.
 - `/api/proxy/[id]`가 서버에서 외부 API를 대신 호출하므로 **CORS 문제 없음**, 서비스키는 **브라우저로 노출되지 않는다.**
 - **JSON / XML 응답 모두 지원** (`responseType: 'xml'`이면 fast-xml-parser로 파싱 후 동일 파이프라인).
-- **API별 서비스키 분리** — `serviceKeyEnv`로 API마다 다른 환경변수를 가리킬 수 있고, 비어 있으면 공통 `API_SERVICE_KEY_PUBLIC`로 폴백한다. 레거시 `API_SERVICE_KEY`도 호환된다.
+- **API별 서비스키 분리** — `serviceKeyEnv`가 지정된 API는 해당 환경변수가 반드시 필요하다. 지정되지 않은 API만 공통 `API_SERVICE_KEY_PUBLIC`를 사용하며 레거시 `API_SERVICE_KEY`도 호환된다.
 - **업스트림 에러 감지** — `errorCheck.containerPaths`로 본문 내 에러 코드(`code 50` 등)를 탐지해 502 + 사람이 읽을 수 있는 메시지로 정규화.
 - 무한스크롤(React Query `useInfiniteQuery` + IntersectionObserver)로 `pageNo` / `numOfRows=20`씩 이어 로드.
 - 범용 렌더러가 응답을 스캔해 **날짜/URL/이미지/숫자/중첩 객체**를 자동으로 알맞게 표시.
@@ -29,7 +29,7 @@
 | `consumer-recall-water` | 먹는 물 리콜 | 0403 | `CONSUMER24_WATER_KEY` |
 | `consumer-recall-overseas` | 해외 리콜 | 0501 | `CONSUMER24_OVERSEAS_KEY` |
 
-> 소비자24 API는 **카테고리별로 서비스키가 따로 발급**됩니다. data.go.kr에서 각 리콜 데이터를 활용신청하고 발급받은 키를 위 환경변수에 넣어주세요. 값이 비어 있으면 `API_SERVICE_KEY_PUBLIC`이 우선 폴백되고, 없으면 `API_SERVICE_KEY`가 사용됩니다.
+> 소비자24 API는 **카테고리별로 서비스키가 따로 발급**됩니다. data.go.kr에서 각 리콜 데이터를 활용신청하고 발급받은 키를 위 환경변수에 각각 넣어주세요. 공용 `API_SERVICE_KEY_PUBLIC`로는 대체되지 않습니다.
 
 추가 등록된 공공데이터포털 API:
 

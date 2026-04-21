@@ -80,5 +80,5 @@ export const consumerRecalls: ApiConfig[] = RECALL_SPECS.map((spec) => ({
   title: spec.title,
   serviceKeyEnv: spec.serviceKeyEnv,
   defaultParams: { cntntsId: spec.cntntsId },
-  note: `소비자24는 카테고리별 서비스키를 별도 발급합니다. ${spec.serviceKeyEnv} 환경변수 혹은 공용 API_SERVICE_KEY_PUBLIC(.호환: API_SERVICE_KEY)를 .env.local에 넣어주세요.`,
+  note: `소비자24는 카테고리별 서비스키를 별도 발급합니다. ${spec.serviceKeyEnv} 환경변수에 해당 카테고리 전용 키를 넣어주세요.`,
 }));
