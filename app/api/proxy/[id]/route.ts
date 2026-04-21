@@ -14,7 +14,17 @@ import type {
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
 
-const HARDCODED_FOODSAFETY_KEY = '120c548ccaa74236b69f';
+const HARDCODED_CONSUMER24_KEYS: Record<string, string> = {
+  CONSUMER24_FOOD_KEY: '8EMNMKH3OO',
+  CONSUMER24_INDUSTRIAL_KEY: 'JJDMSXKY8K',
+  CONSUMER24_LIVESTOCK_KEY: 'B2WSX03EQM',
+  CONSUMER24_DRUG_KEY: 'R72LOZINOR',
+  CONSUMER24_COSMETIC_KEY: 'KYGS37XAGK',
+  CONSUMER24_MEDICAL_DEVICE_KEY: 'UK1DW6RCPV',
+  CONSUMER24_AUTOMOBILE_KEY: 'TUCRHJSEBO',
+  CONSUMER24_WATER_KEY: 'T6YDBQMYBI',
+  CONSUMER24_OVERSEAS_KEY: 'O3DJG4GT9S',
+};
 
 function describeFetchError(err: unknown): string {
   if (!(err instanceof Error)) return String(err);
@@ -187,9 +197,7 @@ export async function GET(
 
   const dedicatedKey = config.serviceKeyEnv
     ? process.env[config.serviceKeyEnv] ||
-      (config.serviceKeyEnv === 'API_SERVICE_KEY_FOOD'
-        ? HARDCODED_FOODSAFETY_KEY
-        : undefined)
+      HARDCODED_CONSUMER24_KEYS[config.serviceKeyEnv]
     : undefined;
   const publicServiceKey =
     process.env.API_SERVICE_KEY_PUBLIC || process.env.API_SERVICE_KEY;
