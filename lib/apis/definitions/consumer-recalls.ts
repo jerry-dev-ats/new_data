@@ -12,7 +12,7 @@ import type { ApiConfig } from '../types';
 
 const SHARED: Omit<ApiConfig, 'id' | 'title' | 'defaultParams'> = {
   category: '소비자24 · 리콜',
-  endpoint: 'https://www.consumer.go.kr/openapi/contents/index.do',
+  endpoint: 'https://www.consumer.go.kr/openapi/recall/contents/index.do',
   responseType: 'xml',
   arrayTags: ['content'],
   pageParam: 'pageNo',
