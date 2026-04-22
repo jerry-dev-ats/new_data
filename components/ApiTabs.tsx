@@ -59,7 +59,7 @@ function getGroupKey(api: ApiConfig): GroupKey {
 }
 
 export function ApiTabs({ items, activeId, onSelect }: Props) {
-  const [openGroup, setOpenGroup] = useState<GroupKey>(() => {
+  const [openGroup, setOpenGroup] = useState<GroupKey | null>(() => {
     const active = items.find((api) => api.id === activeId);
     return active ? getGroupKey(active) : "food";
   });
@@ -107,12 +107,12 @@ export function ApiTabs({ items, activeId, onSelect }: Props) {
           >
             <button
               type="button"
-              onClick={() => {
-                setOpenGroup(groupKey);
-                if (!hasActive && groupItems[0]) {
-                  onSelect(groupItems[0].id);
-                }
-              }}
+              onClick={() =>
+                setOpenGroup((current) =>
+                  current === groupKey ? null : groupKey,
+                )
+              }
+              aria-expanded={isOpen}
               className={
                 "flex w-full items-start justify-between gap-4 px-4 py-3.5 text-left transition " +
                 (hasActive ? "bg-slate-950 text-white" : "hover:bg-slate-50")
