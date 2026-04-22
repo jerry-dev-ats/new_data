@@ -73,7 +73,7 @@ export function ApiPanel({ config }: Props) {
   }, [query]);
 
   return (
-    <section className="mx-auto flex w-full max-w-7xl flex-col gap-4 px-4 py-6">
+    <section className="flex w-full flex-col gap-4">
       <header className="flex flex-wrap items-center justify-between gap-3">
         <div>
           <p className="text-xs font-medium text-slate-500">
