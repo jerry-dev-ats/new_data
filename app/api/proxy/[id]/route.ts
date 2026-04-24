@@ -270,10 +270,16 @@ export async function GET(
   const rawText = await upstreamRes.text();
 
   if (!upstreamRes.ok) {
+    const quotaExceeded =
+      upstreamRes.status === 429 ||
+      /quota exceeded/i.test(rawText);
+
     return NextResponse.json(
       {
         error: true,
-        message: `외부 API ${upstreamRes.status} 응답`,
+        message: quotaExceeded
+          ? '외부 API 호출 한도를 초과했습니다. 잠시 후 다시 시도해 주세요.'
+          : `외부 API ${upstreamRes.status} 응답`,
         upstreamStatus: upstreamRes.status,
         upstreamBody: rawText.slice(0, 500),
       },

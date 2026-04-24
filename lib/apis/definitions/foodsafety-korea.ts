@@ -141,4 +141,48 @@ export const foodsafetyKoreaApis: ApiConfig[] = [
       RAWMTRL_NM: '원료명',
     },
   },
+  {
+    ...FOODSAFETY_SHARED,
+    id: 'foodsafety-food-poisoning-occurrence',
+    title: '식중독 발생정보',
+    category: '식품안전나라 · 식중독',
+    serviceId: 'I2848',
+    dataPath: ['I2848', 'row'],
+    totalPath: ['I2848', 'total_count'],
+    errorCheck: {
+      ...FOODSAFETY_SHARED.errorCheck,
+      containerPaths: [['I2848', 'RESULT']],
+    },
+    labelMap: {
+      OCCRNC_YEAR: '발생연도',
+      OCCRNC_MM: '발생월',
+      OCCRNC_AREA: '발생지역',
+      OCCRNC_CNT: '발생건수',
+      PATNT_CNT: '환자수',
+    },
+  },
+  {
+    ...FOODSAFETY_SHARED,
+    id: 'foodsafety-food-poisoning-occurrence-xml',
+    title: '식중독 발생정보 (XML)',
+    category: '식품안전나라 · 식중독',
+    responseType: 'xml',
+    arrayTags: ['row'],
+    serviceId: 'I2848',
+    dataPath: ['I2848', 'row'],
+    totalPath: ['I2848', 'total_count'],
+    errorCheck: {
+      ...FOODSAFETY_SHARED.errorCheck,
+      containerPaths: [['I2848', 'RESULT']],
+    },
+    labelMap: {
+      OCCRNC_YEAR: '발생연도',
+      OCCRNC_MM: '발생월',
+      OCCRNC_AREA: '발생지역',
+      OCCRNC_CNT: '발생건수',
+      PATNT_CNT: '환자수',
+    },
+    note:
+      '식품안전나라 OpenAPI 인증키를 API_SERVICE_KEY_FOOD로 설정해야 합니다. 이 탭은 I2848 XML 응답을 파싱해 표시합니다.',
+  },
 ];

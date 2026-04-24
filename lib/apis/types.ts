@@ -8,6 +8,27 @@ export type JsonValue =
 
 export type JsonObject = { [key: string]: JsonValue };
 
+export type ApiQueryParamOption = {
+  label: string;
+  value: string;
+};
+
+export type ApiQueryParam = {
+  key: string;
+  label: string;
+  input?: 'text' | 'select';
+  inputMode?: 'text' | 'numeric';
+  placeholder?: string;
+  defaultValue?: string;
+  defaultValueStrategy?: 'latestKmaPublishTime';
+  required?: boolean;
+  helpText?: string;
+  maxLength?: number;
+  validationPattern?: string;
+  validationMessage?: string;
+  options?: ApiQueryParamOption[];
+};
+
 export type ApiConfig = {
   id: string;
   title: string;
@@ -48,6 +69,7 @@ export type ApiConfig = {
   totalPath?: string[];
   pageParam?: string;
   sizeParam?: string;
+  queryParams?: ApiQueryParam[];
   labelMap?: Record<string, string>;
   note?: string;
 };

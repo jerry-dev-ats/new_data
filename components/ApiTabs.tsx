@@ -5,7 +5,7 @@
 import { useEffect, useState } from "react";
 import type { ApiConfig } from "@/lib/apis/types";
 
-type GroupKey = "food" | "drug" | "cosmetic";
+type GroupKey = "food" | "drug" | "cosmetic" | "weather" | "health";
 
 type Props = {
   items: ApiConfig[];
@@ -26,9 +26,27 @@ const GROUP_META: Record<GroupKey, { label: string; description: string }> = {
     label: "생활·화장품",
     description: "화장품 · 공산품 · 자동차 · 해외리콜",
   },
+  weather: {
+    label: "대기·기상",
+    description: "AirKorea · 생활기상지수 · 보건기상지수",
+  },
+  health: {
+    label: "보건·질병",
+    description: "감염병 · 질병 통계 · 공중보건",
+  },
 };
 
 function getGroupKey(api: ApiConfig): GroupKey {
+  if (api.category.startsWith("보건") || api.category.startsWith("감염병")) {
+    return "health";
+  }
+  if (
+    api.category.startsWith("대기") ||
+    api.category.startsWith("기상") ||
+    api.category.startsWith("환경")
+  ) {
+    return "weather";
+  }
   if (
     api.category.startsWith("식품") ||
     api.category.startsWith("식품안전나라")
@@ -76,7 +94,7 @@ export function ApiTabs({ items, activeId, onSelect }: Props) {
       acc[getGroupKey(api)].push(api);
       return acc;
     },
-    { food: [], drug: [], cosmetic: [] },
+    { food: [], drug: [], cosmetic: [], weather: [], health: [] },
   );
   const activeItem = items.find((api) => api.id === activeId);
 
